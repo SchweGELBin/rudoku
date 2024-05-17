@@ -1,4 +1,8 @@
-# [](https://github.com/SchweGELBin/rudoku/compare/v0.7.0...v) (2024-05-17)
+# [](https://github.com/SchweGELBin/rudoku/compare/v0.8.0...v) (2024-05-17)
+
+
+
+# [0.8.0](https://github.com/SchweGELBin/rudoku/compare/v0.7.0...v0.8.0) (2024-05-17)
 
 
 ### Features
