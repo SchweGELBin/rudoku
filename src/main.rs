@@ -14,8 +14,8 @@ fn main() {
         [0,0,0,0,0,0,0,0,0]
     ];
 
-    // Solve grid
-    let solved_grid = solve(grid.clone(), 0, 0).
+    // Solve grid 
+    let solved_grid = solve(grid.clone(), None).
         expect("Sudoku unsolvable");
     print_grid(solved_grid.clone());
 }
@@ -47,19 +47,20 @@ fn check_validity(grid: Grid<u8>, row: u8, col: u8, num: u8) -> bool {
 }
 
 // Solves the sudoku recursively
-fn solve(mut grid: Grid<u8>, mut row: u8, mut col: u8) -> Option<Grid<u8>> {
-    // Handle overflow
-    if col >= 9 {
-        col = 0;
-        row += 1;
-    }
-    // Finished solving
-    if row >= 9 {
+fn solve(mut grid: Grid<u8>, seq: Option<Vec<u8>>) -> Option<Grid<u8>> {
+    let mut seq: Vec<u8> = seq.unwrap_or((0..81).collect());
+    // Finished generating
+    if seq.is_empty() {
         return Some(grid);
     }
+    // Select cell, based on sequence
+    let col: u8 = seq[0] % 9;
+    let row: u8 = (seq[0] - col) / 9;
+    // Remove used element from sequence
+    seq.remove(0);
     // Skip set cells
     if grid.get(row, col) > Some(&0) {
-        return solve(grid.clone(), row, col + 1);
+        return solve(grid.clone(), Some(seq.clone()));
     }
     // Test cell
     for i in 1..=9 {
@@ -67,7 +68,7 @@ fn solve(mut grid: Grid<u8>, mut row: u8, mut col: u8) -> Option<Grid<u8>> {
             // Set element to i
             let grid = set_element(grid.clone(), row, col, i);
             // Continue recursively
-            let solved_grid = solve(grid.clone(), row, col + 1);
+            let solved_grid = solve(grid.clone(), Some(seq.clone()));
             if solved_grid.is_some() {
                 return Some(solved_grid?);
             }
@@ -91,18 +92,21 @@ fn set_element(grid: Grid<u8>, row: u8, col: u8, num: u8) -> Grid<u8> {
     grid
 }
 
-fn print_grid(grid: Grid<u8>) {
-    for i in 0..grid.rows() {
-        if i % 3 == 0 {
+fn print_grid(grid: Grid<u8>) { 
+    let mut j = 0;
+    for i in grid.iter() { 
+        // Format
+        if j % 9 == 0 {
             println!();
-        }
-        for j in 0..grid.cols() {
-            if j % 3 == 0 {
-                print!("  ");
+            if j != 0 && j % 27 == 0 {
+                println!("---------------------");
             }
-            print!("{}", grid.get(i, j).
-                   expect("Couldn't print grid: Cell not found"));
+        } else if j % 3 == 0 {
+            print!("| ");
         }
-        println!();
+        j += 1;
+        // Print value
+        print!("{i} "); 
     }
+    println!();
 }
