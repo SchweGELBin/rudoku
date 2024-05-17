@@ -14,7 +14,7 @@ fn main() {
         [0,0,0,0,0,0,0,0,0]
     ];
 
-    // Solve grid 
+    // Solve grid
     let solved_grid = solve(grid.clone(), None).
         expect("Sudoku unsolvable");
     print_grid(solved_grid.clone());
@@ -92,9 +92,9 @@ fn set_element(grid: Grid<u8>, row: u8, col: u8, num: u8) -> Grid<u8> {
     grid
 }
 
-fn print_grid(grid: Grid<u8>) { 
+fn print_grid(grid: Grid<u8>) {
     let mut j = 0;
-    for i in grid.iter() { 
+    for i in grid.iter() {
         // Format
         if j % 9 == 0 {
             println!();
@@ -106,7 +106,7 @@ fn print_grid(grid: Grid<u8>) {
         }
         j += 1;
         // Print value
-        print!("{i} "); 
+        print!("{i} ");
     }
     println!();
 }
