@@ -1,6 +1,11 @@
 # [](https://github.com/SchweGELBin/rudoku/compare/v0.7.0...v) (2024-05-17)
 
 
+### Features
+
+* bump version code ([8224601](https://github.com/SchweGELBin/rudoku/commit/8224601969e862cdde75e6b42f000bb17fddba3a))
+
+
 
 # [0.7.0](https://github.com/SchweGELBin/rudoku/compare/b19407bd47aee5b8718122f6ea1e443fe8dbc1cd...v0.7.0) (2024-05-17)
 
