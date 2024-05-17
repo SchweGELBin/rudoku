@@ -1,4 +1,5 @@
 use grid::*;
+use rand::{thread_rng, seq::SliceRandom, Rng};
 
 fn main() {
     // Example grid
@@ -13,11 +14,19 @@ fn main() {
         [0,0,0,0,0,0,0,0,0]
         [0,0,0,0,0,0,0,0,0]
     ];
+    println!("Example grid:");
+    print_grid(grid.clone());
 
     // Solve grid
     let solved_grid = solve(grid.clone(), None).
         expect("Sudoku unsolvable");
+    println!("Solved grid:");
     print_grid(solved_grid.clone());
+
+    // Generate grid
+    let generated_grid = generate();
+    println!("Generated grid:");
+    print_grid(generated_grid.clone());
 }
 
 // Checks if the given number is valid in the given cell
@@ -92,21 +101,50 @@ fn set_element(grid: Grid<u8>, row: u8, col: u8, num: u8) -> Grid<u8> {
     grid
 }
 
+// Prints the given sudoku
 fn print_grid(grid: Grid<u8>) {
     let mut j = 0;
+    let line = format!(" {}","-".repeat(7)).repeat(3);
     for i in grid.iter() {
         // Format
-        if j % 9 == 0 {
-            println!();
-            if j != 0 && j % 27 == 0 {
-                println!("---------------------");
-            }
-        } else if j % 3 == 0 {
+        if j % 9 == 0 && j != 0 {
+            println!("|");
+        }
+        if j % 27 == 0 {
+            println!("{line} ");
+        }
+        if j % 3 == 0 {
             print!("| ");
         }
-        j += 1;
         // Print value
-        print!("{i} ");
+        if *i != 0 {
+            print!("{i} ");
+        } else {
+            print!("  ");
+        }
+        j += 1;
     }
-    println!();
+    println!("|\n{line} ");
+}
+
+// Generates a sudoku
+fn generate() -> Grid<u8>{
+    // Set empty grid
+    let empty_grid: Grid<u8> = Grid::new(9,9);
+    // Set random sequence
+    let mut seq: Vec<u8> = (0..81).collect();
+    seq.shuffle(&mut thread_rng());
+    // Solve grid with random sequence
+    let mut grid = solve(empty_grid.clone(), Some(seq.clone())).
+        expect("Sudoku unsolvable");
+    // Remove some cells
+    let miss = thread_rng().gen_range(45..=63);
+    for _i in 0..=miss {
+        let col: u8 = seq[0] % 9;
+        let row: u8 = (seq[0] - col) / 9;
+        grid = set_element(grid.clone(), row, col, 0);
+        seq.remove(0);
+    }
+    // Return grid
+    grid
 }
