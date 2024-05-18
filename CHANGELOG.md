@@ -1,4 +1,13 @@
-# [](https://github.com/SchweGELBin/rudoku/compare/v0.8.0...v) (2024-05-17)
+# [](https://github.com/SchweGELBin/rudoku/compare/v0.9.0...v) (2024-05-18)
+
+
+
+# [0.9.0](https://github.com/SchweGELBin/rudoku/compare/v0.8.0...v0.9.0) (2024-05-18)
+
+
+### Features
+
+* improve generate algorithm ([e73dccb](https://github.com/SchweGELBin/rudoku/commit/e73dccbb3c79e512d2d48ca77460a5eeb9ded156))
 
 
 
