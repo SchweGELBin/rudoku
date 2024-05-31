@@ -1,5 +1,5 @@
 use grid::*;
-use rand::{thread_rng, seq::SliceRandom, Rng};
+use rand::{seq::SliceRandom, thread_rng, Rng};
 
 fn main() {
     // Example grid
@@ -18,8 +18,7 @@ fn main() {
     print_grid(grid.clone());
 
     // Solve grid
-    let solved_grid = solve(grid.clone(), None).
-        expect("Sudoku unsolvable");
+    let solved_grid = solve(grid.clone(), None).expect("Sudoku unsolvable");
     println!("Solved grid:");
     print_grid(solved_grid.clone());
 
@@ -94,8 +93,9 @@ fn set_element(grid: Grid<u8>, row: u8, col: u8, num: u8) -> Grid<u8> {
     let row: usize = row.into();
     let col: usize = col.into();
     let mut grid = grid;
-    let mut tmp: Vec<u8> = grid.remove_row(row).
-        expect("Couldn't set element: Row not found");
+    let mut tmp: Vec<u8> = grid
+        .remove_row(row)
+        .expect("Couldn't set element: Row not found");
     tmp[col] = num;
     grid.insert_row(row, tmp);
     grid
@@ -104,7 +104,7 @@ fn set_element(grid: Grid<u8>, row: u8, col: u8, num: u8) -> Grid<u8> {
 // Prints the given sudoku
 fn print_grid(grid: Grid<u8>) {
     let mut j = 0;
-    let line = format!(" {}","-".repeat(7)).repeat(3);
+    let line = format!(" {}", "-".repeat(7)).repeat(3);
     for i in grid.iter() {
         // Format
         if j % 9 == 0 && j != 0 {
@@ -128,9 +128,9 @@ fn print_grid(grid: Grid<u8>) {
 }
 
 // Generates a sudoku
-fn generate() -> Grid<u8>{
+fn generate() -> Grid<u8> {
     // Set empty grid
-    let mut start_grid: Grid<u8> = Grid::new(9,9);
+    let mut start_grid: Grid<u8> = Grid::new(9, 9);
     // Set sequence
     let mut seq: Vec<u8> = (0..81).collect();
     let mut rem: Vec<u8> = Vec::new();
@@ -140,9 +140,9 @@ fn generate() -> Grid<u8>{
         sec.shuffle(&mut thread_rng());
         for _row in 0..3 {
             for _col in 0..3 {
-                start_grid = set_element(start_grid.clone(), _row + _i*3, _col + _i*3, sec[0]);
+                start_grid = set_element(start_grid.clone(), _row + _i * 3, _col + _i * 3, sec[0]);
                 sec.remove(0);
-                rem.push(_col+_i*3+(_row+_i*3)*9); 
+                rem.push(_col + _i * 3 + (_row + _i * 3) * 9);
             }
         }
     }
@@ -152,13 +152,12 @@ fn generate() -> Grid<u8>{
         seq.remove((*i).into());
     }
     // Shuffle sequence
-    seq.shuffle(&mut thread_rng()); 
+    seq.shuffle(&mut thread_rng());
     // Solve grid with random sequence
-    let mut grid = solve(start_grid.clone(), Some(seq.clone())).
-        expect("Sudoku unsolvable");
+    let mut grid = solve(start_grid.clone(), Some(seq.clone())).expect("Sudoku unsolvable");
     // Print solution
     println!("Solution of generated grid:");
-    print_grid(grid.clone()); 
+    print_grid(grid.clone());
     // Remove some cells
     let miss = thread_rng().gen_range(27..=45);
     let mut seq_miss: Vec<u8> = (0..81).collect();
